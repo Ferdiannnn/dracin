@@ -44,47 +44,44 @@ export default async function Home() {
   ];
 
   return (
-    <>
-      <meta name="google-site-verification" content="_bb9YdofmZriPq78ryCcQkRSQdMWRRnQ_TVENohKp2Q" />
-      <main className="min-h-screen pb-20 bg-[#0a0a0a] overflow-x-hidden text-white">
-        <Navbar />
+    <main className="min-h-screen pb-20 bg-[#0a0a0a] overflow-x-hidden text-white">
+      <Navbar />
 
-        {/* Featured / FYP Section */}
-        {heroDrama && (
-          <HeroSection drama={heroDrama} />
+      {/* Featured / FYP Section */}
+      {heroDrama && (
+        <HeroSection drama={heroDrama} />
+      )}
+
+      {/* Content Sections - Shifted up to overlap Hero slightly for depth */}
+      <div className="relative z-10 -mt-24 space-y-4">
+
+        {/* Tabbed Dubindo Section */}
+        {dubIndoLatest.length > 0 && (
+          <TabbedSectionSlider title="Dubbing Indonesia" tabs={dubIndoTabs} />
         )}
 
-        {/* Content Sections - Shifted up to overlap Hero slightly for depth */}
-        <div className="relative z-10 -mt-24 space-y-4">
+        {latestData.length > 0 && (
+          <SectionSlider title="Terbaru di Dracin 25" movies={latestData} link="/category/latest" />
+        )}
 
-          {/* Tabbed Dubindo Section */}
-          {dubIndoLatest.length > 0 && (
-            <TabbedSectionSlider title="Dubbing Indonesia" tabs={dubIndoTabs} />
-          )}
+        {trendingData.length > 0 && (
+          <SectionSlider title="Sedang Trending" movies={trendingData} link="/category/trending" />
+        )}
 
-          {latestData.length > 0 && (
-            <SectionSlider title="Terbaru di Dracin 25" movies={latestData} link="/category/latest" />
-          )}
+        {popularData.length > 0 && (
+          <SectionSlider title="Pencarian Populer" movies={popularData} link="/category/popular" />
+        )}
 
-          {trendingData.length > 0 && (
-            <SectionSlider title="Sedang Trending" movies={trendingData} link="/category/trending" />
-          )}
+        {fypData.length > 0 && (
+          <SectionSlider title="Rekomendasi FYP" movies={fypData} link="/category/fyp" />
+        )}
 
-          {popularData.length > 0 && (
-            <SectionSlider title="Pencarian Populer" movies={popularData} link="/category/popular" />
-          )}
+      </div>
 
-          {fypData.length > 0 && (
-            <SectionSlider title="Rekomendasi FYP" movies={fypData} link="/category/fyp" />
-          )}
-
-        </div>
-
-        {/* Simple Footer */}
-        <footer className="mt-20 py-8 border-t border-white/10 text-center text-gray-500 text-sm">
-          <p>&copy; 2026 Dracin 25 Streaming. All rights reserved.</p>
-        </footer>
-      </main>
-    </>
+      {/* Simple Footer */}
+      <footer className="mt-20 py-8 border-t border-white/10 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 Dracin 25 Streaming. All rights reserved.</p>
+      </footer>
+    </main>
   );
 }

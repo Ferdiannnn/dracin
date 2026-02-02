@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Dracin 25 - Nonton Drama China Sub Indo Gratis",
   description: "Streaming Drama China terbaru subtitle Indonesia. Nonton Dracin gratis update setiap hari, tersedia genre Romance, Action, Fantasy dan banyak lagi.",
   keywords: ["drama china", "dracin", "sub indo", "streaming drama", "nonton gratis", "chinese drama"],
+  verification: {
+    google: "_bb9YdofmZriPq78ryCcQkRSQdMWRRnQ_TVENohKp2Q",
+  },
 };
 
 export default function RootLayout({
