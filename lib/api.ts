@@ -33,23 +33,23 @@ async function fetchAPI<T>(endpoint: string): Promise<T> {
 }
 
 export const api = {
-    getLatest: async (): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/latest`);
+    getLatest: async (page: number = 1): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/latest?page=${page}`);
         return Array.isArray(res) ? res : [];
     },
 
-    getTrending: async (): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/trending`);
+    getTrending: async (page: number = 1): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/trending?page=${page}`);
         return Array.isArray(res) ? res : [];
     },
 
-    getFYP: async (): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/foryou`);
+    getFYP: async (page: number = 1): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/foryou?page=${page}`);
         return Array.isArray(res) ? res : [];
     },
 
-    getPopularSearch: async (): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/populersearch`);
+    getPopularSearch: async (page: number = 1): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/populersearch?page=${page}`);
         return Array.isArray(res) ? res : [];
     },
 
