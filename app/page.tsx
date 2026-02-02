@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import SectionSlider from "@/components/SectionSlider";
 import TabbedSectionSlider from "@/components/TabbedSectionSlider";
 import { api } from "@/lib/api";
+import { Drama } from "@/types/drama";
 
 export default async function Home() {
   const latestData = await api.getLatest();
@@ -11,8 +12,18 @@ export default async function Home() {
   const popularData = await api.getPopularSearch();
 
   // Fetch both datasets for the tabbed slider
-  const dubIndoLatest = await api.getDubIndo("terbaru");
-  const dubIndoPopular = await api.getDubIndo("terpopuler");
+  let dubIndoLatest: Drama[] = [];
+  try {
+    dubIndoLatest = await api.getDubIndo("terbaru");
+  } catch (error) {
+    console.error("Failed to fetch Dubbing Indonesia Latest:", error);
+  }
+  let dubIndoPopular: Drama[] = [];
+  try {
+    dubIndoPopular = await api.getDubIndo("terpopuler");
+  } catch (error) {
+    console.error("Failed to fetch Dubbing Indonesia Popular:", error);
+  }
 
   // Use the first item of FYP as the Hero, otherwise fallback to first trending
   const heroDrama = fypData.length > 0 ? fypData[0] : (trendingData.length > 0 ? trendingData[0] : null);
@@ -50,7 +61,7 @@ export default async function Home() {
         )}
 
         {latestData.length > 0 && (
-          <SectionSlider title="Terbaru di Dracin" movies={latestData} link="/category/latest" />
+          <SectionSlider title="Terbaru di Dracin 25" movies={latestData} link="/category/latest" />
         )}
 
         {trendingData.length > 0 && (
@@ -69,7 +80,7 @@ export default async function Home() {
 
       {/* Simple Footer */}
       <footer className="mt-20 py-8 border-t border-white/10 text-center text-gray-500 text-sm">
-        <p>&copy; 2026 Dracin Streaming. All rights reserved.</p>
+        <p>&copy; 2026 Dracin 25 Streaming. All rights reserved.</p>
       </footer>
     </main>
   );

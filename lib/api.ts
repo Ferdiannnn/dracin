@@ -16,30 +16,40 @@ async function fetchAPI<T>(endpoint: string): Promise<T> {
     });
 
     if (!res.ok) {
-        throw new Error(`Failed to fetch data from ${endpoint}`);
+        // Log detailed error for debugging
+        console.error(`[API Error] Failed to fetch ${endpoint}`);
+        console.error(`Status: ${res.status} ${res.statusText}`);
+        try {
+            const errorBody = await res.text();
+            console.error(`Response Body: ${errorBody}`);
+        } catch (e) {
+            console.error("Could not read error body");
+        }
+
+        throw new Error(`Failed to fetch data from ${endpoint} (Status: ${res.status})`);
     }
 
     return res.json();
 }
 
 export const api = {
-    getLatest: async (page: number = 1): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/latest?page=${page}`);
+    getLatest: async (): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/latest`);
         return Array.isArray(res) ? res : [];
     },
 
-    getTrending: async (page: number = 1): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/trending?page=${page}`);
+    getTrending: async (): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/trending`);
         return Array.isArray(res) ? res : [];
     },
 
-    getFYP: async (page: number = 1): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/foryou?page=${page}`);
+    getFYP: async (): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/foryou`);
         return Array.isArray(res) ? res : [];
     },
 
-    getPopularSearch: async (page: number = 1): Promise<Drama[]> => {
-        const res = await fetchAPI<Drama[]>(`/populersearch?page=${page}`);
+    getPopularSearch: async (): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/populersearch`);
         return Array.isArray(res) ? res : [];
     },
 
