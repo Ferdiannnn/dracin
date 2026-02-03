@@ -1,6 +1,5 @@
 import React from "react";
 import { api } from "@/lib/api";
-import Navbar from "@/components/Navbar";
 import MovieCard from "@/components/MovieCard";
 import { Drama } from "@/types/drama";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -85,7 +84,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
     return (
         <main className="min-h-screen bg-[#0a0a0a] text-white">
-            <Navbar />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
                 <h1 className="text-3xl font-bold mb-8 flex items-center gap-2">
                     <span className="w-1.5 h-8 bg-red-600 rounded-full block"></span>

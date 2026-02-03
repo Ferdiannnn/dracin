@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import SectionSlider from "@/components/SectionSlider";
 import TabbedSectionSlider from "@/components/TabbedSectionSlider";
@@ -45,7 +44,6 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen pb-20 bg-[#0a0a0a] overflow-x-hidden text-white">
-      <Navbar />
 
       {/* Featured / FYP Section */}
       {heroDrama && (

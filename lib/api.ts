@@ -82,9 +82,33 @@ export const api = {
 
     getDetail: async (bookId: string): Promise<DetailDrama | null> => {
         try {
-            const res = await fetchAPI<any>(`/detail?bookId=${bookId}`);
-            // If fetchAPI already unwrapped .data, validation needed
-            return res || null;
+            // Since the API does not support getting details by ID directly (returns 404 or just episodes),
+            // we have to find the drama in the lists to get metadata.
+
+            const strategies = [
+                () => api.getLatest(),
+                () => api.getTrending(),
+                () => api.getFYP(),
+                () => api.getPopularSearch(),
+                () => api.getDubIndo("terbaru"),
+                () => api.getDubIndo("terpopuler"),
+                // Try searching by ID as a fallback, though usually requires name
+                () => api.getSearch(bookId),
+            ];
+
+            const results = await Promise.allSettled(strategies.map(s => s()));
+
+            for (const result of results) {
+                if (result.status === 'fulfilled' && Array.isArray(result.value)) {
+                    const found = result.value.find(d => String(d.bookId) === String(bookId));
+                    if (found) {
+                        return found;
+                    }
+                }
+            }
+
+            console.warn(`[getDetail] Drama with ID ${bookId} not found in any lists.`);
+            return null;
         } catch (error) {
             console.error("Error fetching detail:", error);
             return null;

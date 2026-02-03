@@ -1,6 +1,5 @@
 import React from "react";
 import { api } from "@/lib/api";
-import Navbar from "@/components/Navbar";
 import DramaWatcher from "@/components/DramaWatcher";
 import { Metadata } from "next";
 
@@ -40,7 +39,6 @@ export default async function DetailPage({ params }: Props) {
 
     return (
         <main className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
-            <Navbar />
             <DramaWatcher drama={drama} episodes={episodes} />
         </main>
     );

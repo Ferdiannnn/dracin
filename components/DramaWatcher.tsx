@@ -79,8 +79,8 @@ export default function DramaWatcher({ drama, episodes }: DramaWatcherProps) {
                                 )}
                             </div>
 
-                            <div className="space-y-4 max-w-3xl">
-                                <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-md">
+                            <div className="space-y-3 sm:space-y-4 max-w-3xl">
+                                <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white drop-shadow-md leading-tight">
                                     {drama.bookName}
                                 </h1>
 
