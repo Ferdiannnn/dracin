@@ -1,6 +1,6 @@
 import { Drama, DramaResponse, DetailDrama, Episode } from "@/types/drama";
 
-const BASE_URL = "https://api.sansekai.my.id/api/dramabox";
+const BASE_URL = "https://www.magma-api.biz.id/dramabox";
 
 async function fetchAPI<T>(endpoint: string): Promise<T> {
     // Add timestamp to prevent caching at all levels (CDN, Browser, Next.js)
@@ -29,10 +29,27 @@ async function fetchAPI<T>(endpoint: string): Promise<T> {
         throw new Error(`Failed to fetch data from ${endpoint} (Status: ${res.status})`);
     }
 
-    return res.json();
+    const json = await res.json();
+    // API returns wrapped object { status: true, creator: "...", data: [...] }
+    if (json && json.data) {
+        return json.data;
+    }
+    return json;
 }
 
 export const api = {
+    getVip: async (page: number = 1): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/vip?page=${page}`);
+        return Array.isArray(res) ? res : [];
+    },
+
+    getRandom: async (): Promise<Drama[]> => {
+        const res = await fetchAPI<Drama[]>(`/random`);
+        // API might return a single object or array, ensure array return for consistency if needed, 
+        // but Drama[] implies array. Let's assume it returns array of random dramas.
+        return Array.isArray(res) ? res : (res ? [res] : []) as any;
+    },
+
     getLatest: async (page: number = 1): Promise<Drama[]> => {
         const res = await fetchAPI<Drama[]>(`/latest?page=${page}`);
         return Array.isArray(res) ? res : [];
@@ -66,12 +83,8 @@ export const api = {
     getDetail: async (bookId: string): Promise<DetailDrama | null> => {
         try {
             const res = await fetchAPI<any>(`/detail?bookId=${bookId}`);
-            // API might return mapped object or direct object, need to be careful.
-            // Based on user request info: 200 OK.
-            // Assuming standard response structure or direct object.
-            // Let's assume it returns the DetailDrama object directly or wrapped.
-            // Safe check:
-            return res.data || res;
+            // If fetchAPI already unwrapped .data, validation needed
+            return res || null;
         } catch (error) {
             console.error("Error fetching detail:", error);
             return null;
