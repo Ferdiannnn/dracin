@@ -21,7 +21,7 @@ export default function MovieCard({ movie }: { movie: Drama }) {
             <div className="relative h-[300px] w-full overflow-hidden rounded-xl shadow-lg border border-white/5">
                 <Image
                     src={imageUrl}
-                    alt={movie.bookName}
+                    alt={movie.bookName || "Drama Cover"}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     unoptimized

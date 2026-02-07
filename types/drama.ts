@@ -2,6 +2,7 @@ export interface Drama {
     bookId: number;
     bookName: string;
     coverWap: string;
+    cover?: string;
     introduction: string;
     chapterCount: number;
     tags: string[];
@@ -23,6 +24,7 @@ export interface DetailDrama {
     bookId: number;
     bookName: string;
     coverWap: string;
+    cover?: string;
     introduction: string;
     chapterCount: number;
     tags: string[];

@@ -30,8 +30,8 @@ export default function SectionSlider({ title, movies, link = "#" }: SectionSlid
 
                 <div className="relative">
                     <div className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide snap-x">
-                        {movies.map((movie) => (
-                            <MovieCard key={movie.bookId} movie={movie} />
+                        {movies.map((movie, index) => (
+                            <MovieCard key={`${movie.bookId}-${index}`} movie={movie} />
                         ))}
                     </div>
 
