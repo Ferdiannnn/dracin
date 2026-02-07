@@ -3,7 +3,6 @@ import SectionSlider from "@/components/SectionSlider";
 import TabbedSectionSlider from "@/components/TabbedSectionSlider";
 import { api } from "@/lib/api";
 import { Drama } from "@/types/drama";
-import { Analytics } from "@vercel/analytics/next"
 
 export default async function Home() {
   const latestData = await api.getLatest();
@@ -45,7 +44,6 @@ export default async function Home() {
 
   return (
     <>
-      <Analytics />
       <main className="min-h-screen pb-20 bg-[#0a0a0a] overflow-x-hidden text-white">
 
         {/* Featured / FYP Section */}
