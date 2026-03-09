@@ -77,7 +77,7 @@ export default async function DetailPage({ params }: Props) {
                         description: drama.introduction,
                         image: drama.cover || drama.coverWap,
                         genre: drama.tags,
-                        url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://dracin25.com"}/drama/${drama.bookId}`,
+                        url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://www.homeme.my.id"}/drama/${drama.bookId}`,
                     }),
                 }}
             />

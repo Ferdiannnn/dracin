@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://dracin25.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://www.homeme.my.id"),
   title: {
     default: "Dracin 25 - Nonton Drama China Sub Indo Gratis",
     template: "%s | Dracin 25",
