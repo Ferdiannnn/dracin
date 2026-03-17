@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://dracin25.com";
+    // Memastikan selalu menggunakan homeme.my.id
+    const baseUrl = "https://www.homeme.my.id";
 
     return {
         rules: {

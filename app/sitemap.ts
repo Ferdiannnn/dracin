@@ -2,7 +2,8 @@ import { MetadataRoute } from "next";
 import { api } from "@/lib/api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://dracin25.com";
+    // Memastikan selalu menggunakan homeme.my.id agar lolos validasi Google Search Console
+    const baseUrl = "https://www.homeme.my.id";
 
     // Static routes
     const routes = [

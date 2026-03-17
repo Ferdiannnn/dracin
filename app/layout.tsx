@@ -94,12 +94,12 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 name: "Dracin 25",
-                url: process.env.NEXT_PUBLIC_BASE_URL || "https://dracin25.com",
+                url: process.env.NEXT_PUBLIC_BASE_URL || "https://www.homeme.my.id",
                 potentialAction: {
                   "@type": "SearchAction",
                   target: {
                     "@type": "EntryPoint",
-                    urlTemplate: `${process.env.NEXT_PUBLIC_BASE_URL || "https://dracin25.com"}/search?q={search_term_string}`,
+                    urlTemplate: `${process.env.NEXT_PUBLIC_BASE_URL || "https://www.homeme.my.id"}/search?q={search_term_string}`,
                   },
                   "query-input": "required name=search_term_string",
                 },
