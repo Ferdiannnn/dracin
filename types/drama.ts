@@ -12,6 +12,11 @@ export interface Drama {
         hotCode: string;
         sort: number;
     };
+    id?: string | number;
+    name?: string;
+    playCount?: string;
+    cornerName?: string;
+    cornerColor?: string;
 }
 
 export interface DramaResponse {
@@ -20,21 +25,8 @@ export interface DramaResponse {
     data: Drama[];
 }
 
-export interface DetailDrama {
-    bookId: number;
-    bookName: string;
-    coverWap: string;
-    cover?: string;
-    introduction: string;
-    chapterCount: number;
-    tags: string[];
-    protagonist: string;
+export interface DetailDrama extends Drama {
     items?: Episode[]; // Optional as it might be fetched separately
-    rankVo?: {
-        rankType: number;
-        hotCode: string;
-        sort: number;
-    };
 }
 
 export interface Episode {
