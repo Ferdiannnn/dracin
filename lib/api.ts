@@ -115,26 +115,91 @@ export const api = {
         }
     },
 
-    getAllEpisodes: async (bookId: string): Promise<Episode[]> => {
+    getAllEpisodes: async (bookId: string, totalEpisodes: number = 0): Promise<Episode[]> => {
         try {
-            const separator = "?";
-            const bustUrl = `${BASE_URL}/api/chapters/video?book_id=${bookId}&_t=${Date.now()}`;
+            let allEpisodes: any[] = [];
             
-            const rawRes = await fetch(bustUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                cache: "no-store",
-            });
-            const json = await rawRes.json();
-            // The API returns the first episode in `data` and the rest in `extras`
-            const res = [
-                ...(Array.isArray(json?.data) ? json.data : []),
-                ...(Array.isArray(json?.extras) ? json.extras : [])
-            ];
+            if (totalEpisodes > 0) {
+                // Fetch sequentially to prevent Cloudflare / API rate-limit connect timeouts
+                for (let i = 1; i <= totalEpisodes; i += 6) {
+                    const bustUrl = `${BASE_URL}/api/chapters/video?book_id=${bookId}&episode=${i}&_t=${Date.now()}`;
+                    try {
+                        const rawRes = await fetch(bustUrl, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            cache: "no-store",
+                        });
+                        if (!rawRes.ok) break;
+                        
+                        const json = await rawRes.json();
+                        const data = Array.isArray(json?.data) ? json.data : [];
+                        const extras = Array.isArray(json?.extras) ? json.extras : [];
+                        
+                        const currentBatch = [...data, ...extras];
+                        if (currentBatch.length === 0) break;
+                        
+                        allEpisodes = [...allEpisodes, ...currentBatch];
+                    } catch (err) {
+                        console.error(`Error fetching episode batch starting at ${i}:`, err);
+                        // If one fails due to timeout, break the loop to return whatever we have so far
+                        break;
+                    }
+                }
+            } else {
+                // Fallback to sequential fetching by sniffing the max current episode
+                let currentEpisode = 1;
+                let hasMore = true;
+                let maxRequests = 100;
 
-            if (res.length === 0) return [];
+                while (hasMore && maxRequests > 0) {
+                    const bustUrl = `${BASE_URL}/api/chapters/video?book_id=${bookId}&episode=${currentEpisode}&_t=${Date.now()}`;
+                    try {
+                        const rawRes = await fetch(bustUrl, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            cache: "no-store",
+                        });
+                        
+                        if (!rawRes.ok) break;
 
-            return res.map((item: any) => {
+                        const json = await rawRes.json();
+                        const data = Array.isArray(json?.data) ? json.data : [];
+                        const extras = Array.isArray(json?.extras) ? json.extras : [];
+                        const currentBatch = [...data, ...extras];
+                        
+                        if (currentBatch.length === 0) {
+                            hasMore = false;
+                            break;
+                        }
+                        
+                        allEpisodes = [...allEpisodes, ...currentBatch];
+                        const maxChapterIndex = Math.max(...currentBatch.map((item: any) => parseInt(item.chapter_index) || 0));
+                        
+                        if (currentBatch.length < 6 || isNaN(maxChapterIndex) || maxChapterIndex === 0) {
+                            hasMore = false;
+                        } else {
+                            currentEpisode = maxChapterIndex + 1;
+                        }
+                    } catch (err) {
+                        console.error(`Error in sequential fetch loop at episode ${currentEpisode}:`, err);
+                        break;
+                    }
+                    maxRequests--;
+                }
+            }
+
+            if (allEpisodes.length === 0) return [];
+
+            // Deduplicate by chapter_index
+            const uniqueEpisodes = new Map();
+            for (const item of allEpisodes) {
+                const id = parseInt(item.chapter_index) || 0;
+                if (!uniqueEpisodes.has(id)) {
+                    uniqueEpisodes.set(id, item);
+                }
+            }
+
+            return Array.from(uniqueEpisodes.values()).map((item: any) => {
                 let videoUrl = "";
                 // Expected format: item.stream_url = [{quality: 1080, url: '...'}]
                 if (item.stream_url && item.stream_url.length > 0) {
@@ -147,7 +212,7 @@ export const api = {
                     name: `Episode ${item.chapter_index}`,
                     url: videoUrl,
                 };
-            });
+            }).sort((a, b) => a.id - b.id);
         } catch (error) {
             console.error("Error fetching episodes:", error);
             return [];

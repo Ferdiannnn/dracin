@@ -13,7 +13,8 @@ export async function GET(request: Request) {
     }
 
     try {
-        const data = await api.getAllEpisodes(bookId);
+        const drama = await api.getDetail(bookId);
+        const data = await api.getAllEpisodes(bookId, drama?.chapterCount || 0);
         return NextResponse.json(data);
     } catch (error) {
         return NextResponse.json({ error: 'Failed to fetch episodes' }, { status: 500 });

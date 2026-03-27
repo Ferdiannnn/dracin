@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DetailPage({ params }: Props) {
     const { bookId } = await params;
     const drama = await api.getDetail(bookId);
-    const episodes = await api.getAllEpisodes(bookId);
+    const episodes = await api.getAllEpisodes(bookId, drama?.chapterCount || 0);
 
     if (!drama) {
         return (
